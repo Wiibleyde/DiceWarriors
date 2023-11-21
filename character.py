@@ -1,20 +1,21 @@
 from __future__ import annotations
 from dice import Dice
+from serializable import Serializable
 
 from rich import print
 from rich.pretty import pprint
 
 import json
 
-class Character:
+class Character(Serializable):
     
-    def __init__(self, name: str, max_health: int, attack: int, defense: int, dice) -> None:
-        self._name = name
-        self._max_health = max_health
-        self._current_health = max_health
-        self._attack_value = attack
-        self._defense_value = defense
-        self._dice = dice
+    def __init__(self, _name: str, _max_health: int, _attack_value: int, _defense_value: int, _dice: Dice, _current_health: int = None) -> None:
+        self._name = _name
+        self._max_health = _max_health
+        self._current_health = _current_health if _current_health != None else _max_health
+        self._attack_value = _attack_value
+        self._defense_value = _defense_value
+        self._dice = _dice
         
     def __str__(self):
         return f"I'm {self._name} the Character with attack: {self._attack_value} and defense: {self._defense_value}"
@@ -43,10 +44,6 @@ class Character:
     def get_class(self):
         return self.__class__.__name__
     
-    @classmethod
-    def from_dict(cls, data: dict):
-        return cls(data["name"], data["max_health"], data["attack_value"], data["defense_value"], Dice(data["dice"]))
-
     def is_alive(self):
         # return bool(self._current_health)
         return self._current_health > 0
@@ -85,17 +82,17 @@ class Character:
         print(f"🛡️ {self._name} take {wounds} wounds from {attacker.get_name()} in his face ! (damages: {damages} - defense: {self._defense_value} - roll: {roll})")
         self.decrease_health(wounds)
 
-class Warrior(Character):
+class Warrior(Character, Serializable):
     def compute_damages(self, roll: int, target: Character):
         print(f"🪓 Bonus: Axe in your face ! (+3 damages)")
         return super().compute_damages(roll, target) + 3
 
-class Mage(Character):
+class Mage(Character, Serializable):
     def compute_defense(self, damages: int, roll: int, attacker: Character):
         print(f"🧙 Bonus: Magic protection ! (-3 wounds)")
         return super().compute_defense(damages, roll, attacker) - 3
     
-class Thief(Character):
+class Thief(Character, Serializable):
     def compute_damages(self, roll: int, target: Character):
         print(f"🔪 Bonus: Ignore defense")
         return super().compute_damages(roll, target) + target.get_defense_value()

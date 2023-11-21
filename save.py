@@ -1,12 +1,16 @@
 import json
 
-from character import Character
+from character import Character, Warrior
+from dice import Dice
 
 class Save:
     def __init__(self, path: str = "save.json"):
         self.path = path
         self.data = []
-        self.load()
+        try:
+            self.load()
+        except FileNotFoundError:
+            self.save()
 
     def load(self):
         with open(self.path, "r") as file:
@@ -17,12 +21,15 @@ class Save:
             json.dump(self.data, file)
 
     def add(self, character: Character):
-        self.data.append(json.dumps(character.__dict__))
-        self.save()
+        if character.get_name() not in [character["_name"] for character in self.data]:
+            self.data.append(character.to_dict())
+            self.save()
+            return True
+        return False
 
     def remove(self, name: str):
         for character in self.data:
-            if character["name"] == name:
+            if character["_name"] == name:
                 self.data.remove(character)
                 self.save()
                 return True
@@ -30,10 +37,20 @@ class Save:
 
     def get(self, name: str):
         for character in self.data:
-            if character["name"] == name:
+            if character["_name"] == name:
+                print(character)
                 return Character.from_dict(character)
         return None
     
     def get_all(self):
-        print(self.data)
         return [Character.from_dict(character) for character in self.data]
+    
+if __name__=='__main__':
+    save = Save()
+    char = Warrior("Alice", 100, 10, 10, Dice(6), 0)
+    print(char)
+    save.add(char)
+    for character in save.get_all():
+        print(character._max_health)
+        print(character._current_health)
+    # save.remove("Alice")
