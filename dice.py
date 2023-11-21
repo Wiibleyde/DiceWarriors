@@ -1,6 +1,8 @@
 from random import randint
 
-class Dice:
+from serializable import Serializable
+
+class Dice(Serializable):
     def __init__(self, sides: int = 6):
         self._sides = sides
 
@@ -13,7 +15,12 @@ class Dice:
     def roll(self) -> int:
         return randint(1, self._sides)
     
-class RiggedDice(Dice):
+    def to_dict(self) -> dict:
+        return {
+            "sides": self._sides
+        }
+    
+class RiggedDice(Dice, Serializable):
     def __init__(self, sides: int = 6, rigged_value: int = 6):
         super().__init__(sides)
         self._rigged_value = rigged_value
@@ -23,6 +30,12 @@ class RiggedDice(Dice):
 
     def roll(self, rigged: bool = False) -> int:
         return super().roll() if not rigged else self._rigged_value
+    
+    def to_dict(self) -> dict:
+        return {
+            "sides": self._sides,
+            "rigged_value": self._rigged_value
+        }
 
 if __name__=='__main__':
     riggedDice = RiggedDice(sides=20, rigged_value=20)
