@@ -50,7 +50,10 @@ if __name__=='__main__':
     char = Warrior("Alice", 100, 10, 10, Dice(6), 0)
     print(char)
     save.add(char)
+    print(save.get_all())
     for character in save.get_all():
+        print(character)
         print(character._max_health)
         print(character._current_health)
+        print(character._dice.roll())
     # save.remove("Alice")
