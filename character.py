@@ -34,6 +34,16 @@ class Character:
     def get_defense_value(self):
         return self._defense_value
     
+    def to_dict(self):
+        return {
+            "name": self._name,
+            "max_health": self._max_health,
+            "current_health": self._current_health,
+            "attack_value": self._attack_value,
+            "defense_value": self._defense_value,
+            "dice": self._dice._sides
+        }
+    
     def is_alive(self):
         # return bool(self._current_health)
         return self._current_health > 0
