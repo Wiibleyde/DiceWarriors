@@ -6,6 +6,7 @@ class Save:
     def __init__(self, path: str = "save.json"):
         self.path = path
         self.data = []
+        self.load()
 
     def load(self):
         with open(self.path, "r") as file:
@@ -16,7 +17,7 @@ class Save:
             json.dump(self.data, file)
 
     def add(self, character: Character):
-        self.data.append(character.to_dict())
+        self.data.append(json.dumps(character.__dict__))
         self.save()
 
     def remove(self, name: str):
@@ -34,4 +35,5 @@ class Save:
         return None
     
     def get_all(self):
+        print(self.data)
         return [Character.from_dict(character) for character in self.data]

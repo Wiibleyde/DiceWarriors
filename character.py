@@ -2,6 +2,9 @@ from __future__ import annotations
 from dice import Dice
 
 from rich import print
+from rich.pretty import pprint
+
+import json
 
 class Character:
     
@@ -34,16 +37,16 @@ class Character:
     def get_defense_value(self):
         return self._defense_value
     
-    def to_dict(self):
-        return {
-            "name": self._name,
-            "max_health": self._max_health,
-            "current_health": self._current_health,
-            "attack_value": self._attack_value,
-            "defense_value": self._defense_value,
-            "dice": self._dice._sides
-        }
+    def get_dice(self):
+        return self._dice
     
+    def get_class(self):
+        return self.__class__.__name__
+    
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(data["name"], data["max_health"], data["attack_value"], data["defense_value"], Dice(data["dice"]))
+
     def is_alive(self):
         # return bool(self._current_health)
         return self._current_health > 0
@@ -91,7 +94,7 @@ class Mage(Character):
     def compute_defense(self, damages: int, roll: int, attacker: Character):
         print(f"🧙 Bonus: Magic protection ! (-3 wounds)")
         return super().compute_defense(damages, roll, attacker) - 3
-
+    
 class Thief(Character):
     def compute_damages(self, roll: int, target: Character):
         print(f"🔪 Bonus: Ignore defense")
@@ -102,9 +105,13 @@ if __name__ == "__main__":
 
     character1 = Thief("Gerard", 20, 8, 3, Dice(6))
     character2 = Warrior("Lisa", 20, 8, 3, Dice(6))
+
+    # temp = character1.to_dict()
+    # thief1 = Thief.from_dict(temp)
+    # print(thief1)
     #print(character1)
     #print(character2)
     
-    while(character1.is_alive() and character2.is_alive()):
-        character1.attack(character2)
-        character2.attack(character1)
+    # while(character1.is_alive() and character2.is_alive()):
+    #     character1.attack(character2)
+    #     character2.attack(character1)
