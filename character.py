@@ -15,6 +15,8 @@ class Character(Serializable):
         self._current_health = _current_health if _current_health != None else _max_health
         self._attack_value = _attack_value
         self._defense_value = _defense_value
+        if not isinstance(_dice, Dice):
+            _dice = Dice.from_dict(_dice)
         self._dice = _dice
         
     def __str__(self):
