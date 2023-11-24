@@ -42,8 +42,8 @@ class Progression(Serializable):
         level_mobs = []
         if self._level == 1:
             print("Level 1")
-            zombie1 = Zombie(random.choice(random_zombie_names), 5, 3, 2, Dice(3))
-            zombie2 = Zombie(random.choice(random_zombie_names), 5, 3, 2, Dice(3))
+            zombie1 = Zombie(random.choice(random_zombie_names), 7, 3, 2, Dice(3))
+            zombie2 = Zombie(random.choice(random_zombie_names), 7, 3, 2, Dice(3))
             level_mobs.append(zombie1)
             level_mobs.append(zombie2)
         elif self._level == 2:

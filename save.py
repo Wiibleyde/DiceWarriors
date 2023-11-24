@@ -26,6 +26,14 @@ class Save:
             self.save()
             return True
         return False
+    
+    def update(self, character: Character):
+        for index, character in enumerate(self.data):
+            if character["_name"] == character.get_name():
+                self.data[index] = character.to_dict()
+                self.save()
+                return True
+        return False
 
     def remove(self, name: str):
         for character in self.data:

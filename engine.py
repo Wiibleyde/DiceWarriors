@@ -4,9 +4,9 @@ from character import Warrior, Mage, Thief
 from dice import Dice
 
 def main():
-    warrior = Warrior(name="Nathan", dice=Dice(6), attack=8, defense=3, max_health=20)
-    mage = Mage(name="Eva", dice=Dice(6), attack=8, defense=3, max_health=20)
-    thief = Thief(name="Samuel", dice=Dice(6), attack=8, defense=3, max_health=20)
+    warrior = Warrior(_name="Nathan", _dice=Dice(6), _attack_value=8, _defense_value=3, _max_health=20)
+    mage = Mage(_name="Eva", _dice=Dice(6), _attack_value=8, _defense_value=3, _max_health=20)
+    thief = Thief(_name="Samuel", _dice=Dice(6), _attack_value=8, _defense_value=3, _max_health=20)
 
     characters = [warrior, mage, thief]
     stats = {}

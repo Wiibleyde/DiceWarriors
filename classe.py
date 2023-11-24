@@ -56,19 +56,18 @@ class Phantom(Character):
 
 class Zombie(Character):
     def decrease_health(self, amount):
-        if (self._current_health - amount) <= 0:
+        print(amount)
+        if self._current_health - amount <= 0:
             if self._current_health <= 5:
                 regenerated_health = 5
-                #print("\n")
                 print(f"{self._name} se régénère et a maintenant {regenerated_health} HP !")
                 self._current_health = regenerated_health
             else:
+                print(f"{self._name} a maintenant {self._current_health - amount} HP !")
                 amount = self._current_health
             self.show_healthbar()
         else:
             super().decrease_health(amount)
-            #print("\n")
-            #print(f"{self._name} a maintenant {self._current_health} HP")
 
     def regenerate(self):
         self._current_health = self._max_health

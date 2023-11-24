@@ -9,7 +9,7 @@ import json
 
 class Character(Serializable):
     
-    def __init__(self, _name: str, _max_health: int, _attack_value: int, _defense_value: int, _dice: Dice, _current_health: int = None) -> None:
+    def __init__(self, _name: str, _max_health: int, _attack_value: int, _defense_value: int, _dice: Dice, _current_health: int = None, _progression: int = None) -> None:
         self._name = _name
         self._max_health = _max_health
         self._current_health = _current_health if _current_health != None else _max_health
@@ -18,6 +18,7 @@ class Character(Serializable):
         if not isinstance(_dice, Dice):
             _dice = Dice.from_dict(_dice)
         self._dice = _dice
+        self._progression = _progression if _progression != None else 1
         
     def __str__(self):
         return f"I'm {self._name} the Character with attack: {self._attack_value} and defense: {self._defense_value}"
@@ -42,6 +43,9 @@ class Character(Serializable):
     
     def get_dice(self):
         return self._dice
+    
+    def get_progression(self):
+        return self._progression
     
     def get_class(self):
         return self.__class__.__name__
