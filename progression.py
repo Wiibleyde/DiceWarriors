@@ -42,26 +42,26 @@ class Progression(Serializable):
         level_mobs = []
         if self._level == 1:
             print("Level 1")
-            zombie1 = Zombie(random.choice(random_zombie_names), 7, 3, 2, Dice(3))
-            zombie2 = Zombie(random.choice(random_zombie_names), 7, 3, 2, Dice(3))
+            zombie1 = Zombie(random.choice(random_zombie_names), 7, 3, 0, Dice(3))
+            zombie2 = Zombie(random.choice(random_zombie_names), 7, 3, 0, Dice(3))
             level_mobs.append(zombie1)
             level_mobs.append(zombie2)
         elif self._level == 2:
             print("Level 2")
-            ogre1 = Ogre(random.choice(random_ogre_names), 10, 5, 3, Dice(6))
-            ogre2 = Ogre(random.choice(random_ogre_names), 10, 5, 3, Dice(6))
+            ogre1 = Ogre(random.choice(random_ogre_names), 10, 5, 1, Dice(6))
+            ogre2 = Ogre(random.choice(random_ogre_names), 10, 5, 1, Dice(6))
             level_mobs.append(ogre1)
             level_mobs.append(ogre2)
         elif self._level == 3:
             print("Level 3")
-            golem1 = Golem(random.choice(random_golem_names), 15, 7, 4, Dice(9))
-            golem2 = Golem(random.choice(random_golem_names), 15, 7, 4, Dice(9))
+            golem1 = Golem(random.choice(random_golem_names), 15, 7, 1, Dice(9))
+            golem2 = Golem(random.choice(random_golem_names), 15, 7, 1, Dice(9))
             level_mobs.append(golem1)
             level_mobs.append(golem2)
         elif self._level == 4:
             print("Level 4")
-            phantom1 = Phantom(random.choice(random_phantom_names), 20, 10, 5, Dice(12))
-            phantom2 = Phantom(random.choice(random_phantom_names), 20, 10, 5, Dice(12))
+            phantom1 = Phantom(random.choice(random_phantom_names), 20, 10, 4, Dice(12))
+            phantom2 = Phantom(random.choice(random_phantom_names), 20, 10, 4, Dice(12))
             level_mobs.append(phantom1)
             level_mobs.append(phantom2)
         elif self._level == 5:

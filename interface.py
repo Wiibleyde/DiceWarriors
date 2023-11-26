@@ -276,7 +276,7 @@ class Interface:
             self.text = ttk.Label(self.root, text=f"{enemy.get_name()}: {enemy.get_current_health()}/{enemy.get_max_health()}hp")
             self.text.pack(pady=10)
 
-            self.button = ttk.Button(self.root, text="Attack", command=lambda: self.player.attack(enemy))
+            self.button = ttk.Button(self.root, text="Attack", command=lambda: self.attack(enemy))
             self.button.pack(pady=10)
 
         self.button = ttk.Button(self.root, text="Save", command=self.save_game)
@@ -284,6 +284,20 @@ class Interface:
 
         self.button = ttk.Button(self.root, text="Quit", command=self.root.quit)
         self.button.pack(pady=10)
+
+    def attack(self, enemy: Character):
+        self.player.attack(enemy)
+        if not enemy.is_alive():
+            self.enemies.remove(enemy)
+            if len(self.enemies) == 0:
+                self.win()
+                return
+        for enemy in self.enemies:
+            enemy.attack(self.player)
+            if not self.player.is_alive():
+                self.lose()
+                return
+        self.battle_page()
     
     def win(self):
         for widget in self.root.winfo_children():

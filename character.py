@@ -52,9 +52,11 @@ class Character(Serializable):
     
     def is_alive(self):
         # return bool(self._current_health)
+        # print(f"🩸 {self._name} is {'alive' if self._current_health > 0 else 'dead'}")
         return self._current_health > 0
         
     def decrease_health(self, amount: int):
+        # print(f"🩸 {self._name} take {amount} damages in his face !")
         if (self._current_health - amount) < 0:
             amount = self._current_health
         self._current_health -= amount
@@ -64,8 +66,8 @@ class Character(Serializable):
         if not self.is_alive():
             return
         missing_hp = self._max_health - self._current_health
-        healthbar = f"[{'⬜' * self._current_health}{'☐' * missing_hp}] {self._current_health}/{self._max_health}hp"
-        print(healthbar)
+        # healthbar = f"[{'⬜' * self._current_health}{'☐' * missing_hp}] {self._current_health}/{self._max_health}hp"
+        # print(healthbar)
 
     def regenerate(self):
         self._current_health = self._max_health
@@ -74,19 +76,31 @@ class Character(Serializable):
         return self._attack_value + roll
 
     def compute_defense(self, damages: int, roll: int, attacker: Character):
-        return damages - self._defense_value - roll
+        return damages - self._defense_value - roll if damages - self._defense_value - roll > 0 else 0
 
     def attack(self, target: Character):
         roll = self._dice.roll()
         damages = self.compute_damages(roll, target)
-        print(f"⚔️ {self._name} attack {target.get_name()} with {damages} damages in your face ! (attack: {self._attack_value} + roll: {damages - self._attack_value})")
+        # print(f"⚔️ {self._name} attack {target.get_name()} with {damages} damages in your face ! (attack: {self._attack_value} + roll: {damages - self._attack_value})")
         target.defense(damages, self)
     
     def defense(self, damages: int, attacker: Character):
         roll = self._dice.roll()
         wounds = self.compute_defense(damages, roll, attacker)
-        print(f"🛡️ {self._name} take {wounds} wounds from {attacker.get_name()} in his face ! (damages: {damages} - defense: {self._defense_value} - roll: {roll})")
+        # print(f"🛡️ {self._name} take {wounds} wounds from {attacker.get_name()} in his face ! (damages: {damages} - defense: {self._defense_value} - roll: {roll})")
         self.decrease_health(wounds)
+
+    def increase_progression(self):
+        self._progression += 1
+        # print(f"📈 {self._name} increase his progression to {self._progression} !")
+
+    def level_up(self):
+        self._attack_value += 1
+        self._defense_value += 1
+        self._max_health += 5
+        self._current_health = self._max_health
+        self.increase_progression()
+        # print(f"📈 {self._name} level up ! (attack: {self._attack_value}, defense: {self._defense_value}, health: {self._max_health})")
 
 class Warrior(Character, Serializable):
     def compute_damages(self, roll: int, target: Character):
