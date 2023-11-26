@@ -246,7 +246,7 @@ class Interface:
         self.characters = Save().get_all()
         self.buttons = []
         for character in self.characters:
-            self.button = ttk.Button(self.root, text=character.get_name(), command=lambda character=character: self.load_game(character))
+            self.button = ttk.Button(self.root, text=f"{character.get_name()} - Level {character.get_progression()} - {character.get_class()} - {character.get_current_health()}/{character.get_max_health()}hp", command=lambda character=character: self.load_game(character))
             self.button.pack(pady=10)
             self.buttons.append(self.button)
 
@@ -255,7 +255,7 @@ class Interface:
 
     def load_game(self, character: Character):
         self.player = character
-        self.enemies = Progression(1).get_level_mobs()
+        self.enemies = Progression(self.player.get_progression()).get_level_mobs()
         print(self.enemies)
         self.battle_page()
 
@@ -266,7 +266,7 @@ class Interface:
         self.label = ttk.Label(self.root, text="Dice Warrior", font=("Arial", 40))
         self.label.pack(pady=10)
 
-        self.text = ttk.Label(self.root, text=f"{self.player.get_name()} vs {self.enemies[0].get_name()}")
+        self.text = ttk.Label(self.root, text=f"{self.player.get_name()} vs {len(self.enemies)} enemies")
         self.text.pack(pady=10)
 
         self.text = ttk.Label(self.root, text=f"{self.player.get_name()}: {self.player.get_current_health()}/{self.player.get_max_health()}hp")
@@ -276,7 +276,8 @@ class Interface:
             self.text = ttk.Label(self.root, text=f"{enemy.get_name()}: {enemy.get_current_health()}/{enemy.get_max_health()}hp")
             self.text.pack(pady=10)
 
-            self.button = ttk.Button(self.root, text="Attack", command=lambda: self.attack(enemy))
+            # Button to choose the enemy to attack
+            self.button = ttk.Button(self.root, text=f"Attack {enemy.get_name()}", command=lambda enemy=enemy: self.attack(enemy))
             self.button.pack(pady=10)
 
         self.button = ttk.Button(self.root, text="Save", command=self.save_game)
@@ -330,6 +331,7 @@ class Interface:
 
     def next_level(self):
         self.player.increase_progression()
+        self.save_game()
         self.enemies = Progression(self.player.get_progression()).get_level_mobs()
         self.battle_page()
 
