@@ -26,6 +26,14 @@ class Save:
             self.save()
             return True
         return False
+    
+    def update(self, character: Character):
+        for index, character_data in enumerate(self.data):
+            if character_data["_name"] == character.get_name():
+                self.data[index] = character.to_dict()
+                self.save()
+                return True
+        return False
 
     def remove(self, name: str):
         for character in self.data:
@@ -50,7 +58,10 @@ if __name__=='__main__':
     char = Warrior("Alice", 100, 10, 10, Dice(6), 0)
     print(char)
     save.add(char)
+    print(save.get_all())
     for character in save.get_all():
+        print(character)
         print(character._max_health)
         print(character._current_health)
+        print(character._dice.roll())
     # save.remove("Alice")
