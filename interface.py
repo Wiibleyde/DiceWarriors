@@ -256,8 +256,14 @@ class Interface:
         self.characters = Save().get_all()
         self.buttons = []
         for character in self.characters:
+            # In one line 
+            self.frame = ttk.Frame(self.root)
+            self.frame.pack(pady=10)
+
             self.button = ttk.Button(self.root, text=f"{character.get_name()} - Level {character.get_progression()} - {character.get_class()} - {character.get_current_health()}/{character.get_max_health()}hp", command=lambda character=character: self.load_game(character))
             self.button.pack(pady=10)
+            self.delete_button = ttk.Button(self.root, text=f"Delete {character.get_name()}", command=lambda character=character: self.remove_character(character), style="danger.TButton")
+            self.delete_button.pack(pady=10)
             self.buttons.append(self.button)
 
         self.button = ttk.Button(self.root, text="Back", command=self.main_page)
@@ -379,6 +385,10 @@ class Interface:
 
         self.button = ttk.Button(self.root, text="Quit", command=self.root.quit)
         self.button.pack(pady=10)
+
+    def remove_character(self, character: Character):
+        Save().remove(character.get_name())
+        self.load_game_page()
 
     def save_game(self):
         Save().update(self.player)
