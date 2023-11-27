@@ -46,7 +46,6 @@ class Save:
     def get(self, name: str):
         for character in self.data:
             if character["_name"] == name:
-                print(character)
                 return Character.from_dict(character)
         return None
     

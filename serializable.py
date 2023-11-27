@@ -2,7 +2,6 @@ class Serializable:
     def to_dict(self):
         dict_repr = {}
         for key, value in self.__dict__.items():
-            print(key, value)
             if hasattr(value, "to_dict"):
                 dict_repr[key] = value.to_dict()
             else:
