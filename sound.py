@@ -13,6 +13,7 @@ class MusicPlayer:
     def wait_for_music_end(self):
         while pygame.mixer.music.get_busy():
             time.sleep(1)
+        pygame.mixer.music.play()
 
     def stop(self):
         pygame.quit()
