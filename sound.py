@@ -1,13 +1,27 @@
 import pygame
 import time
 
-pygame.init()
-pygame.mixer.music.load("sound/sound1.mp3")
-pygame.mixer.music.play()
+class MusicPlayer:
+    def __init__(self, music_path):
+        pygame.init()
+        self.music_path = music_path
 
-# Attendre que la musique se termine
-while pygame.mixer.music.get_busy():
-    time.sleep(1)
+    def play_music(self):
+        pygame.mixer.music.load(self.music_path)
+        pygame.mixer.music.play()
 
-pygame.quit()
+    def wait_for_music_end(self):
+        while pygame.mixer.music.get_busy():
+            time.sleep(1)
 
+    def stop(self):
+        pygame.quit()
+
+if __name__ == "__main__":
+    # Remplacez "chemin/vers/votre/musique.mp3" par le chemin réel de votre fichier MP3.
+    music_path = "sound/sound1.mp3"
+
+    player = MusicPlayer(music_path)
+    player.play_music()
+    player.wait_for_music_end()
+    player.stop()
