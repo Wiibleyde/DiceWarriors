@@ -56,8 +56,8 @@ class Character(Serializable):
         
     def decrease_health(self, amount: int):
         if amount < 0:
-            raise ValueError("You can't decrease health by a negative value")
-        if (self._current_health - amount) < 0:
+            amout = 0
+        elif (self._current_health - amount) < 0:
             amount = self._current_health
         self._current_health -= amount
         self.show_healthbar()
