@@ -20,6 +20,7 @@ python3 main.py
 
 - [Wiibleyde](https://github.com/Wiibleyde)
 - [lguillau](https://github.com/lguillau)
+- [quentin-csg](https://github.com/quentin-csg)
 
 # License
 
