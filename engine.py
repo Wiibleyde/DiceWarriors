@@ -17,9 +17,6 @@ def main():
     car2 = random.choice(characters)
     characters.remove(car2)
 
-    print(car1)
-    print(car2)
-
     stats[car1.get_name()] = 0
     stats[car2.get_name()] = 0
 

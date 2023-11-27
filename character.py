@@ -52,11 +52,11 @@ class Character(Serializable):
     
     def is_alive(self):
         # return bool(self._current_health)
-        # print(f"🩸 {self._name} is {'alive' if self._current_health > 0 else 'dead'}")
         return self._current_health > 0
         
     def decrease_health(self, amount: int):
-        # print(f"🩸 {self._name} take {amount} damages in his face !")
+        if amount < 0:
+            raise ValueError("You can't decrease health by a negative value")
         if (self._current_health - amount) < 0:
             amount = self._current_health
         self._current_health -= amount

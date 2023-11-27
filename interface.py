@@ -3,7 +3,7 @@ from tkinter.messagebox import showinfo
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
 
-from character import *
+from classe import *
 from dice import Dice
 from save import Save
 from progression import Progression
@@ -13,8 +13,8 @@ class Interface:
         self.root = root
         self.root.title("Dice Warrior")
         self.root.geometry("800x600")
-        self.root.minsize(800, 600)
-        self.root.maxsize(800, 600)
+        self.root.minsize(800, 800)
+        self.root.maxsize(800, 800)
         self.root.style = ttk.Style()
         self.root.style.theme_use("superhero")
 
@@ -52,13 +52,19 @@ class Interface:
         self.text = ttk.Label(self.root, text="Choose your character:")
         self.text.pack(pady=10)
 
-        self.button = ttk.Button(self.root, text="Warrior", command=lambda: self.new_game("Warrior"))
+        self.button = ttk.Button(self.root, text="Paladin", command=lambda: self.new_game("Paladin"))
         self.button.pack(pady=10)
 
-        self.button = ttk.Button(self.root, text="Mage", command=lambda: self.new_game("Mage"))
+        self.button = ttk.Button(self.root, text="Warlock", command=lambda: self.new_game("Warlock"))
         self.button.pack(pady=10)
 
-        self.button = ttk.Button(self.root, text="Thief", command=lambda: self.new_game("Thief"))
+        self.button = ttk.Button(self.root, text="Assassin", command=lambda: self.new_game("Assassin"))
+        self.button.pack(pady=10)
+
+        self.button = ttk.Button(self.root, text="Executor", command=lambda: self.new_game("Executor"))
+        self.button.pack(pady=10)
+
+        self.button = ttk.Button(self.root, text="MarksMan HARDCORE", command=lambda:  self.new_game("MarksMan"))
         self.button.pack(pady=10)
 
         self.button = ttk.Button(self.root, text="Back", command=self.main_page)
@@ -220,12 +226,16 @@ class Interface:
         defense = int(self.defVal["text"])
         health = int(self.healthVal["text"])
 
-        if character == "Warrior":
-            self.player = Warrior(name, health, attack, defense, Dice(6))
-        elif character == "Mage":
-            self.player = Mage(name, health, attack, defense, Dice(6))
-        elif character == "Thief":
-            self.player = Thief(name, health, attack, defense, Dice(6))
+        if character == "Paladin":
+            self.player = Paladin(name, health, attack, defense, Dice(6))
+        elif character == "Warlock":
+            self.player = Warlock(name, health, attack, defense, Dice(6))
+        elif character == "Assassin":
+            self.player = Assassin(name, health, attack, defense, Dice(6))
+        elif character == "Executor":
+            self.player = Executor(name, health, attack, defense, Dice(6))
+        elif character == "MarksMan":
+            self.player = MarksMan(name, health, attack, defense, Dice(6))
         resp = Save().add(self.player)
         if not resp:
             showinfo("Error", "A character with this name already exsits, chose another one.")
@@ -256,12 +266,18 @@ class Interface:
     def load_game(self, character: Character):
         self.player = character
         self.enemies = Progression(self.player.get_progression()).get_level_mobs()
-        print(self.enemies)
         self.battle_page()
 
     def battle_page(self):
         for widget in self.root.winfo_children():
             widget.destroy()
+
+        if self.enemies == "Level not found" and self.player.is_alive() and self.player.get_progression() >= 6:
+            self.win_screen()
+            return
+        elif self.enemies == "Level not found" and self.player.is_alive() and self.player.get_progression() < 6:
+            self.next_level()
+            return
 
         self.label = ttk.Label(self.root, text="Dice Warrior", font=("Arial", 40))
         self.label.pack(pady=10)
@@ -310,8 +326,13 @@ class Interface:
         self.text = ttk.Label(self.root, text=f"{self.player.get_name()} won!")
         self.text.pack(pady=10)
 
-        self.button = ttk.Button(self.root, text="Continue", command=self.next_level)
-        self.button.pack(pady=10)
+        
+        if self.player.get_progression() <= 6:
+            self.button = ttk.Button(self.root, text="Continue", command=self.next_level)
+            self.button.pack(pady=10)
+        else:
+            self.button = ttk.Button(self.root, text="Continue", command=self.win_screen)
+            self.button.pack(pady=10)
 
         self.button = ttk.Button(self.root, text="Quit", command=self.root.quit)
         self.button.pack(pady=10)
@@ -330,10 +351,34 @@ class Interface:
         self.button.pack(pady=10)
 
     def next_level(self):
+        
         self.player.increase_progression()
+        
         self.save_game()
         self.enemies = Progression(self.player.get_progression()).get_level_mobs()
+        if self.enemies == []:
+            self.win_screen()
+            return
         self.battle_page()
+
+    def win_screen(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
+        self.label = ttk.Label(self.root, text="Dice Warrior", font=("Arial", 40))
+        self.label.pack(pady=10)
+
+        self.text = ttk.Label(self.root, text=f"{self.player.get_name()} won!")
+        self.text.pack(pady=10)
+
+        self.text = ttk.Label(self.root, text=f"Congratulations! You won the game!\nYou can now quit or start a new game.")
+        self.text.pack(pady=10)
+
+        self.button = ttk.Button(self.root, text="New Game", command=self.new_game_page)
+        self.button.pack(pady=10)
+
+        self.button = ttk.Button(self.root, text="Quit", command=self.root.quit)
+        self.button.pack(pady=10)
 
     def save_game(self):
         Save().update(self.player)
