@@ -56,7 +56,7 @@ class Character(Serializable):
         
     def decrease_health(self, amount: int):
         if amount < 0:
-            amout = 0
+            amount = 0
         elif (self._current_health - amount) < 0:
             amount = self._current_health
         self._current_health -= amount
